@@ -16,22 +16,23 @@ cor(){
 }
 
 login(){
+
     cor
     local linha=10
     local coluna=40
     local posicao="\033c\033[$linha;$coluna"
     for ((i = 0; i < 3; i++ )); do
-        printf "$azul $posicao"'H Login:  ' "$fim"
+        printf "$posicao"'H Login:  ' "$fim"
         read login
         stty -echo
-        printf "$azul $posicao"'H Senha:  ' "$fim"
+        printf "$posicao"'H Senha:  ' 
         read senha
         encrypt $senha
         stty echo 
-        echo -e "$fim"
         [ ! $( _find "where login='$login' and senha='$senha'" ) ] || {
             echo
             echo -e "$verde Ola '$login' sua senha eh '$senha' $fim"
+            se
             return
         }
             echo -e  "$vermelho Acesso negado! $fim"
@@ -65,4 +66,3 @@ usuario(){
     _max
    #_insert $max $login $senha
 }
-login
