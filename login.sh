@@ -9,33 +9,37 @@ encrypt(){
 
 cor(){
     vermelho='\033[41m'
-    verde='\033[42m'
+    verde='\033[42;30m'
     amarelo='\033[43;30m'
     azul='\033[44m'
     fim='\033[m'
 }
 
-login(){
+notificar(){
+    echo
+    echo -e "$2 $1 $fim"
+}
+cor
+notificar "Isso é um teste" $verde
 
+login(){
     cor
-    local linha=10
-    local coluna=40
-    local posicao="\033c\033[$linha;$coluna"
     for ((i = 0; i < 3; i++ )); do
-        printf "$posicao"'H Login:  ' "$fim"
+        notificar "Login: " $azul
         read login
         stty -echo
-        printf "$posicao"'H Senha:  ' 
+        notificar "Senha: " $azul
         read senha
         encrypt $senha
         stty echo 
         [ ! $( _find "where login='$login' and senha='$senha'" ) ] || {
             echo
-            echo -e "$verde Ola '$login' sua senha eh '$senha' $fim"
-            se
+            notificar  "Ola '$login' sua senha eh '$senha' " $verde
+            autoriza=$login
             return
         }
-            echo -e  "$vermelho Acesso negado! $fim"
+            notificar "Acesso negado! " $vermelho
+            autoriza=''
     done
     exit 1
 }
@@ -43,26 +47,37 @@ login(){
 usuario(){
     cor
     local login senha
-    echo "Cadastrar usuario"
-    echo -ne "$azul login: $fim"
+    notificar "Cadastrar usuario" $amarelo
+    notificar "Digite o login para cadastro: " $azul
     read login
-    echo -e "$azul senha: $fim"
+    notificar "Digite a senha do novo usuario:  " $azul
     stty -echo
     read senha
-    echo -ne "$amarelo Confirme a senha: $fim "
+    notificar "Confirme a senha: $fi " $amarelo
     read confirme
     stty echo
     echo
     [ "$senha" == "$confirme"   ] || {
-        echo -e "$vermelho Senha incorreta $fim "
+        notificar "Senha incorreta  " $vermelho
+        echo
         return 1
     }
 
     [[ "$login" && "$senha"  ]] || {
-        echo -e  "$vermelho Login ou senha esta vazio $fim"
+        notificar  "Login ou senha esta vazio" $vermelho
+        echo
         return 1
     }
     encrypt $senha
-    _max
-   #_insert $max $login $senha
+    _insert $max $login $senha
+    notificar "Usuario cadastrado por $autoriza" 
 }
+: '
+login
+
+[ "$autoriza" ] || {
+    return 1
+}
+usuario
+_all
+'

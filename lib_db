@@ -22,16 +22,12 @@ _all(){
     }
     echo "$sql" | sqlite3 -header $BANCO 
 }
-_max(){
-    max=$(_all "count(${campos[0]})" | sed -n 2p)
-    let max++
-}
 
 _find(){
     _campos
     local sql="SELECT * FROM $TABELA " 
     [ ! "$1" ] || {
-        sql+="$1"
+        sql+="where ${campos[0]}='$1'"
     }
     echo "$sql" | sqlite3 $BANCO 
 }
@@ -48,7 +44,7 @@ _delete(){
     _campos
     _tem $1
     local sql="DELETE FROM $TABELA WHERE ${campos[0]}='$login';" 
-    echo "$sql" | sqlite3 $BANCO 
+    echo "$sql" #| sqlite3 $BANCO 
     echo  "$TABELA '$login' limado !!"
 }
 
