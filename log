@@ -1,0 +1,26 @@
+CREATE TABLE pessoa ( nome text, salario text );
+Reginaldo|5600
+Vanessa|2500
+Maria|1500
+Tereza|1800
+Carolina|2100
+Mariiana|3200
+Heitor|7300
+1|Reginaldo|5600
+2|Vanessa|2500
+3|Maria|1500
+4|Tereza|1800
+5|Carolina|2100
+6|Mariiana|3200
+7|Heitor|7300
+CREATE TABLE cargos ( cargo text );
+programador
+dba
+operacao
+devops
+network
+1|programador
+2|dba
+3|operacao
+4|devops
+5|network
