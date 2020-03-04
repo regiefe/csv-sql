@@ -20,7 +20,6 @@ notificar(){
     echo -e "$2 $1 $fim"
 }
 cor
-notificar "Isso é um teste" $verde
 
 login(){
     cor
@@ -32,7 +31,7 @@ login(){
         read senha
         encrypt $senha
         stty echo 
-        [ ! $( _find "where login='$login' and senha='$senha'" ) ] || {
+        [ ! $( _find "WHERE login='$login' AND senha='$senha'" ) ] || {
             echo
             notificar  "Ola '$login' sua senha eh '$senha' " $verde
             autoriza=$login
@@ -72,7 +71,7 @@ usuario(){
     _insert $max $login $senha
     notificar "Usuario cadastrado por $autoriza" 
 }
-: '
+
 login
 
 [ "$autoriza" ] || {
@@ -80,4 +79,3 @@ login
 }
 usuario
 _all
-'

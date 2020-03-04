@@ -27,7 +27,7 @@ _find(){
     _campos
     local sql="SELECT * FROM $TABELA " 
     [ ! "$1" ] || {
-        sql+="where ${campos[0]}='$1'"
+        sql+="where ${campos[1]}='$1'"
     }
     echo "$sql" | sqlite3 $BANCO 
 }
