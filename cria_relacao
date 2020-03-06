@@ -1,0 +1,23 @@
+#!/bin/bash
+relaciona(){
+    BANCO='database/banco.db'    
+    tabelas=($(sqlite3 $BANCO ".table"))
+
+    sqlite3 $BANCO "PRAGMA FOREIGN_KEYS=on"
+
+    sqlite3 $BANCO  "CREATE TABLE relacao_${tabelas[0]}_${tabelas[1]} ( 
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    ${tabelas[0]}_id INTEGER, 
+                    ${tabelas[1]}_id INTEGER, 
+                    FOREIGN KEY (${tabelas[0]}_id) REFERENCES ${tabelas[0]}(id), 
+                    FOREIGN KEY (${tabelas[1]}_id) REFERENCES ${tabelas[1]}(id))"
+   sqlite3 $BANCO "INSERT INTO relacao_${tabelas[0]}_${tabelas[1]} VALUES (null, 1,1 )"
+   sqlite3 $BANCO "INSERT INTO relacao_${tabelas[0]}_${tabelas[1]} VALUES (null, 1,7 )"
+   sqlite3 $BANCO "INSERT INTO relacao_${tabelas[0]}_${tabelas[1]} VALUES (null, 5,2 )"
+   sqlite3 $BANCO "INSERT INTO relacao_${tabelas[0]}_${tabelas[1]} VALUES (null, 2,3 )"
+   sqlite3 $BANCO "INSERT INTO relacao_${tabelas[0]}_${tabelas[1]} VALUES (null, 3,5 )"
+   sqlite3 $BANCO "INSERT INTO relacao_${tabelas[0]}_${tabelas[1]} VALUES (null, 7,3 )"
+
+   sqlite3 -column -header $BANCO "SELECT * FROM ${tabelas[0]}  LEFT JOIN relacao_${tabelas[0]}_${tabelas[1]} ON ${tabelas[0]}.id=relacao_${tabelas[0]}_${tabelas[1]}.${tabelas[0]}_id  JOIN ${tabelas[1]}  ON ${tabelas[1]}.id=relacao_${tabelas[0]}_${tabelas[1]}.${tabelas[1]}_id" 
+}
+relaciona
