@@ -27,15 +27,15 @@ _find(){
     _campos
     local sql="SELECT * FROM $TABELA " 
     [ ! "$1" ] || {
-        sql+="where ${campos[1]}='$1'"
+        sql+="WHERE ${campos[1]}='$1'"
     }
-    echo "$sql" | sqlite3 $BANCO 
+    sqlite3 $BANCO "$sql"
 }
 
 _tem(){
-    tem=$(_find $1 | cut -d '|' -f1)
+    tem=$(_find $1 | cut -d '|' -f2)
     [ "$tem" ] || {
-        echo  "Epa! $tem não ninguem com esse nome"
+        echo  'Epa! não ninguem com esse nome'
         return 1
     }
 }
