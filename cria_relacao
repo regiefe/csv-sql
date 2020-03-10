@@ -2,32 +2,39 @@
 relaciona(){
     BANCO='database/banco.db'    
     tabelas=($(sqlite3 $BANCO ".table"))
-        
-    echo " tabela: $(sqlite3  $BANCO  "SELECT COUNT(id) FROM ${tabelas[0]}") 
-    relacao: $(sqlite3  $BANCO  "SELECT COUNT(id) FROM ${tabelas[1]}") "
-    TABELA=${tabelas[0]}
-    RELACAO=${tabelas[1]}
-    echo "tabela: $TABELA relacao: ${RELACAO}"
+
+    tabela=${tabelas[0]}
+    relacao=${tabelas[1]}
+
+    relacionamento=${tabela:1}
+    relacionamento+=_${relacao:1}
 
     sqlite3 $BANCO "PRAGMA FOREIGN_KEYS=on"
-    sqlite3 $BANCO  "CREATE TABLE ${TABELA}_${RELACAO} ( 
+    sqlite3 $BANCO  "CREATE TABLE ${relacionamento} ( 
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    ${TABELA}_id INTEGER, 
-                    ${RELACAO}_id INTEGER, 
-                    FOREIGN KEY (${TABELA}_id) REFERENCES ${TABELA}(id), 
-                    FOREIGN KEY (${RELACAO}_id) REFERENCES ${RELACAO}(id))"
+                    ${tabela}_id INTEGER, 
+                    ${relacao}_id INTEGER, 
+                    FOREIGN KEY (${tabela}_id) REFERENCES ${tabela}(id), 
+                    FOREIGN KEY (${relacao}_id) REFERENCES ${relacao}(id))"
 
-    sqlite3 $BANCO "INSERT INTO ${TABELA}_${RELACAO} VALUES (null, 1,1 )"
-    sqlite3 $BANCO "INSERT INTO ${TABELA}_${RELACAO} VALUES (null, 1,7 )"
-    sqlite3 $BANCO "INSERT INTO ${TABELA}_${RELACAO} VALUES (null, 5,2 )"
-    sqlite3 $BANCO "INSERT INTO ${TABELA}_${RELACAO} VALUES (null, 2,3 )"
-    sqlite3 $BANCO "INSERT INTO ${TABELA}_${RELACAO} VALUES (null, 3,5 )"
-    sqlite3 $BANCO "INSERT INTO ${TABELA}_${RELACAO} VALUES (null, 7,3 )"
+   echo "$(date +'%Y-%m-%d %H:%M') : Criado a tabela ${relacionamento}" > log/$(echo ${relacionamento})-log
 
-    sqlite3 -column -header $BANCO "CREATE VIEW relaciona AS SELECT * FROM ${TABELA} 
-                    LEFT JOIN ${TABELA}_${RELACAO} 
-                    ON ${TABELA}.id=${TABELA}_${RELACAO}.${TABELA}_id  
-                    LEFT JOIN ${RELACAO}  
-                    ON ${RELACAO}.id=${TABELA}_${RELACAO}.${RELACAO}_id" 
+   sqlite3 $BANCO "INSERT INTO ${relacionamento} VALUES (null, 1,1 )"
+   sqlite3 $BANCO "INSERT INTO ${relacionamento} VALUES (null, 1,7 )"
+   sqlite3 $BANCO "INSERT INTO ${relacionamento} VALUES (null, 5,2 )"
+   sqlite3 $BANCO "INSERT INTO ${relacionamento} VALUES (null, 2,3 )"
+   sqlite3 $BANCO "INSERT INTO ${relacionamento} VALUES (null, 3,5 )"
+   sqlite3 $BANCO "INSERT INTO ${relacionamento} VALUES (null, 7,3 )"
+
+  
+
+   sqlite3 -column -header $BANCO "CREATE VIEW ${relacionamento:+v$relacionamento} AS SELECT * FROM  ${tabela} 
+   JOIN ${relacionamento}
+   ON ${tabela}.id=${relacionamento}.${tabela}_id 
+   JOIN ${relacao} 
+   ON ${relacao}.id=${relacionamento}.${relacao}_id" 
+
+   echo "$(date +'%Y-%m-%d %H:%M') : Criado a view ${relacionamento:+v$relacionamento}" >> log/$(echo ${relacionamento})-log
+   sqlite3 -column -header $BANCO "SELECT * FROM ${relacionamento:+v$relacionamento}" >> log/$(echo ${relacionamento})-log
 }
 relaciona
