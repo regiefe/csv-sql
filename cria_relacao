@@ -1,0 +1,33 @@
+#!/bin/bash
+relaciona(){
+    BANCO='database/banco.db'    
+    tabelas=($(sqlite3 $BANCO ".table"))
+        
+    echo " tabela: $(sqlite3  $BANCO  "SELECT COUNT(id) FROM ${tabelas[0]}") 
+    relacao: $(sqlite3  $BANCO  "SELECT COUNT(id) FROM ${tabelas[1]}") "
+    TABELA=${tabelas[0]}
+    RELACAO=${tabelas[1]}
+    echo "tabela: $TABELA relacao: ${RELACAO}"
+
+    sqlite3 $BANCO "PRAGMA FOREIGN_KEYS=on"
+    sqlite3 $BANCO  "CREATE TABLE ${TABELA}_${RELACAO} ( 
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    ${TABELA}_id INTEGER, 
+                    ${RELACAO}_id INTEGER, 
+                    FOREIGN KEY (${TABELA}_id) REFERENCES ${TABELA}(id), 
+                    FOREIGN KEY (${RELACAO}_id) REFERENCES ${RELACAO}(id))"
+
+    sqlite3 $BANCO "INSERT INTO ${TABELA}_${RELACAO} VALUES (null, 1,1 )"
+    sqlite3 $BANCO "INSERT INTO ${TABELA}_${RELACAO} VALUES (null, 1,7 )"
+    sqlite3 $BANCO "INSERT INTO ${TABELA}_${RELACAO} VALUES (null, 5,2 )"
+    sqlite3 $BANCO "INSERT INTO ${TABELA}_${RELACAO} VALUES (null, 2,3 )"
+    sqlite3 $BANCO "INSERT INTO ${TABELA}_${RELACAO} VALUES (null, 3,5 )"
+    sqlite3 $BANCO "INSERT INTO ${TABELA}_${RELACAO} VALUES (null, 7,3 )"
+
+    sqlite3 -column -header $BANCO "CREATE VIEW relaciona AS SELECT * FROM ${TABELA} 
+                    LEFT JOIN ${TABELA}_${RELACAO} 
+                    ON ${TABELA}.id=${TABELA}_${RELACAO}.${TABELA}_id  
+                    LEFT JOIN ${RELACAO}  
+                    ON ${RELACAO}.id=${TABELA}_${RELACAO}.${RELACAO}_id" 
+}
+relaciona

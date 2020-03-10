@@ -20,24 +20,28 @@ notificar(){
     echo -e "$2 $1 $fim"
 }
 cor
+<<<<<<< HEAD
+=======
+notificar "Isso é um teste $verde"
+>>>>>>> b830c9fed2f7ca07414db5565fa8531d96340975
 
 login(){
     cor
     for ((i = 0; i < 3; i++ )); do
-        notificar "Login: " $azul
+        notificar "Login:  $azul"
         read login
         stty -echo
-        notificar "Senha: " $azul
+        notificar "Senha:  $azul"
         read senha
         encrypt $senha
         stty echo 
         [ ! $( _find "WHERE login='$login' AND senha='$senha'" ) ] || {
             echo
-            notificar  "Ola '$login' sua senha eh '$senha' " $verde
+            notificar  "Ola '$login' sua senha eh '$senha'  $verde"
             autoriza=$login
             return
         }
-            notificar "Acesso negado! " $vermelho
+            notificar "Acesso negado!  $vermelho"
             autoriza=''
     done
     exit 1
@@ -46,24 +50,24 @@ login(){
 usuario(){
     cor
     local login senha
-    notificar "Cadastrar usuario" $amarelo
-    notificar "Digite o login para cadastro: " $azul
+    notificar "Cadastrar usuario $amarelo"
+    notificar "Digite o login para cadastro:  $azul"
     read login
-    notificar "Digite a senha do novo usuario:  " $azul
+    notificar "Digite a senha do novo usuario:   $azul"
     stty -echo
     read senha
-    notificar "Confirme a senha: $fi " $amarelo
+    notificar "Confirme a senha: $fim  $amarelo"
     read confirme
     stty echo
     echo
     [ "$senha" == "$confirme"   ] || {
-        notificar "Senha incorreta  " $vermelho
+        notificar "Senha incorreta   $vermelho"
         echo
         return 1
     }
 
     [[ "$login" && "$senha"  ]] || {
-        notificar  "Login ou senha esta vazio" $vermelho
+        notificar  "Login ou senha esta vazio $vermelho"
         echo
         return 1
     }
