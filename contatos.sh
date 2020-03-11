@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 BANCO='database/agenda.db'
 TABELA='usuario'
 MSG_USO="
@@ -9,13 +10,16 @@ OPEÇÃO:
     -r | --remover - Remover usuario
     -l | --listar - listar usuario 
     -b | --buscar - busca de usuario
+    -a | --atualizar - login obrigatorio para atualizar
 "
 source lib_db
-
-cadastrar(){
+_pega-dados(){
     echo "Cadastrar de usuario"
     echo -n "Digite o login: "
     read login
+    [  "$(_tem $login )" ] || {
+        return 1
+    }
     echo -n "Digite o nome: "
     read nome
     nome=$(echo "$nome" | sed 's/ /+/g')
@@ -23,7 +27,10 @@ cadastrar(){
     read idade
     echo -n "Digite o sexo: "
     read sexo
-    
+}
+
+cadastrar(){
+    _pega-dados
     _insert $login $nome $idade $sexo
 }
 
@@ -46,11 +53,17 @@ buscar(){
     _find $usuario
 }
 
+atualizar(){
+    buscar 
+}
+
 case $1 in
     -c | --cadastrar) cadastrar ;;
     -r | --remover) remover ;;
     -l | --listar) listar ;;
     -b | --buscar) buscar ;;
+    -a | --atualizar) atualizar ;;
+
     *)
         echo "$MSG_USO"
 esac

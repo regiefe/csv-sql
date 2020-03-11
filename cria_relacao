@@ -1,0 +1,40 @@
+#!/bin/bash
+relaciona(){
+    BANCO='database/banco.db'    
+    tabelas=($(sqlite3 $BANCO ".table"))
+
+    tabela=${tabelas[0]}
+    relacao=${tabelas[1]}
+
+    relacionamento=${tabela:1}
+    relacionamento+=_${relacao:1}
+
+    sqlite3 $BANCO "PRAGMA FOREIGN_KEYS=on"
+    sqlite3 $BANCO  "CREATE TABLE ${relacionamento} ( 
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    ${tabela}_id INTEGER, 
+                    ${relacao}_id INTEGER, 
+                    FOREIGN KEY (${tabela}_id) REFERENCES ${tabela}(id), 
+                    FOREIGN KEY (${relacao}_id) REFERENCES ${relacao}(id))"
+
+   echo "$(date +'%Y-%m-%d %H:%M') : Criado a tabela ${relacionamento}" > log/$(echo ${relacionamento})-log
+
+   sqlite3 $BANCO "INSERT INTO ${relacionamento} VALUES (null, 1,1 )"
+   sqlite3 $BANCO "INSERT INTO ${relacionamento} VALUES (null, 1,7 )"
+   sqlite3 $BANCO "INSERT INTO ${relacionamento} VALUES (null, 5,2 )"
+   sqlite3 $BANCO "INSERT INTO ${relacionamento} VALUES (null, 2,3 )"
+   sqlite3 $BANCO "INSERT INTO ${relacionamento} VALUES (null, 3,5 )"
+   sqlite3 $BANCO "INSERT INTO ${relacionamento} VALUES (null, 7,3 )"
+
+  
+
+   sqlite3 -column -header $BANCO "CREATE VIEW ${relacionamento:+v$relacionamento} AS SELECT * FROM  ${tabela} 
+   JOIN ${relacionamento}
+   ON ${tabela}.id=${relacionamento}.${tabela}_id 
+   JOIN ${relacao} 
+   ON ${relacao}.id=${relacionamento}.${relacao}_id" 
+
+   echo "$(date +'%Y-%m-%d %H:%M') : Criado a view ${relacionamento:+v$relacionamento}" >> log/$(echo ${relacionamento})-log
+   sqlite3 -column -header $BANCO "SELECT * FROM ${relacionamento:+v$relacionamento}" >> log/$(echo ${relacionamento})-log
+}
+relaciona

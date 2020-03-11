@@ -27,15 +27,15 @@ _find(){
     _campos
     local sql="SELECT * FROM $TABELA " 
     [ ! "$1" ] || {
-        sql+="where ${campos[0]}='$1'"
+        sql+="WHERE ${campos[1]}='$1'"
     }
-    echo "$sql" | sqlite3 $BANCO 
+    sqlite3 $BANCO "$sql"
 }
 
 _tem(){
-    login=$(_find $1 | cut -d '|' -f1)
-    [ "$login" ] || {
-        echo  "Epa! $login não ninguem com esse nome"
+    tem=$(_find $1 | cut -d '|' -f2)
+    [ "$tem" ] || {
+        echo  'Epa! não ninguem com esse nome'
         return 1
     }
 }
@@ -43,9 +43,9 @@ _tem(){
 _delete(){
     _campos
     _tem $1
-    local sql="DELETE FROM $TABELA WHERE ${campos[0]}='$login';" 
-    echo "$sql" #| sqlite3 $BANCO 
-    echo  "$TABELA '$login' limado !!"
+    local sql="DELETE FROM $TABELA WHERE ${campos[0]}='$tem';" 
+    echo "$sql" | sqlite3 $BANCO 
+    echo  "$TABELA '$tem' limado !!"
 }
 
 _insert(){
@@ -65,7 +65,7 @@ _insert(){
 _update(){
     _campos
     _tem "$1" 
-    [  "$login" ] || return
+    [  "$tem" ] || return
     [[ "$qto" -ge "$#" ]] || {
         echo "Excedeu a quantidade de campos de '$TABELA'"
         return 1
