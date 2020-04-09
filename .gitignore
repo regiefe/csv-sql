@@ -1,0 +1,6 @@
+.gitignore
+teste.sh
+*.db
+*.swp
+*.swo
+log

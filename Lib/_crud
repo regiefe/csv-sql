@@ -20,7 +20,7 @@ _all(){
     [ ! "$1" ] || {
         sql="SELECT $1 FROM $TABELA "
     }
-    echo "$sql" | sqlite3 -header $BANCO 
+    sqlite3 -header $BANCO "$sql"
 }
 
 _find(){
@@ -58,7 +58,7 @@ _insert(){
     valor=$(echo "$valor" | sed 's/+/ /g')  
     local field=$(echo ${campos[@]} | sed 's/ /, /g')
     local sql="INSERT INTO $TABELA ( $field ) VALUES ( $valor ); "
-    echo  "$sql" | sqlite3 $BANCO
+    sqlite3 $BANCO "$sql"
     echo  "'$1' inserido com sucesso !!"
 }
 
@@ -77,6 +77,6 @@ _update(){
     set=$(echo "$set" |  sed "s/=''$//g;s/ //;s/ /, /g")
     set=$(echo $set | sed 's/+/ /g;s/,$//')
     local sql="update $TABELA set $set where ${campos[0]}='$1' "
-    echo  "$sql" | sqlite3 $BANCO
+    sqlite3 $BANCO "$sql" 
     echo  "'$1' atualizado com sucesso !!"
 }

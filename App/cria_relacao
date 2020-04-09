@@ -1,21 +1,26 @@
 #!/bin/bash
+tabelas=$(mktemp)
 relaciona(){
     BANCO='database/banco.db'    
-    tabelas=($(sqlite3 $BANCO ".table"))
+    sqlite3 "$BANCO" ".table" | sed 's/ /\n/g' | grep '^t' > "$tabelas"
 
-    tabela=${tabelas[0]}
-    relacao=${tabelas[1]}
+    #read -p "Escolha as tabelas $(cat $tabelas | sed 's/\n/ /g') para relacionar: " tab_1 tab_2
 
-    relacionamento=${tabela:1}
-    relacionamento+=_${relacao:1}
+    #echo  "tabelas selecionadas $tab_1 e  tabela $tab_2"
+    #return
+    relacionamento=${tabela:2}
+    relacionamento+=_${relacao:2}
 
-    sqlite3 $BANCO "PRAGMA FOREIGN_KEYS=on"
-    sqlite3 $BANCO  "CREATE TABLE ${relacionamento} ( 
+   # sqlite3 $BANCO "PRAGMA FOREIGN_KEYS=on"
+   # sqlite3 $BANCO 
+   echo  "CREATE TABLE ${relacionamento} ( 
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     ${tabela}_id INTEGER, 
                     ${relacao}_id INTEGER, 
                     FOREIGN KEY (${tabela}_id) REFERENCES ${tabela}(id), 
                     FOREIGN KEY (${relacao}_id) REFERENCES ${relacao}(id))"
+                  
+  return
 
    echo "$(date +'%Y-%m-%d %H:%M') : Criado a tabela ${relacionamento}" > log/$(echo ${relacionamento})-log
 

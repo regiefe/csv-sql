@@ -1,0 +1,3 @@
+ALTER TABLE t_pessoa ADD COLUMN  id_cargos;
+UPDATE t_pessoa SET id_cargos='NULL'
+

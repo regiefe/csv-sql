@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+teste=$1
+teste=${teste##*/}
+rm -r  ../log
+./parser_csv.sh $(echo "$teste").csv
+cat ../log/t_$(echo "$teste")-log

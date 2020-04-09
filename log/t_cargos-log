@@ -1,0 +1,19 @@
+2020-04-05 12:35 : Criado os campo da tabela t_cargos
+CREATE TABLE t_cargos ( cargo text );
+
+2020-04-05 12:35 : Gerado a  tabela t_cargos
+programador
+dba
+operacao
+devops
+network
+
+2020-04-05 12:35 : Gerado o indice da tabela t_cargos
+id          cargo      
+----------  -----------
+1           programador
+2           dba        
+3           operacao   
+4           devops     
+5           network    
+
