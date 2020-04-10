@@ -1,6 +1,6 @@
 .gitignore
-teste.sh
-*.db
+teste/
+database/*.db
 *.swp
 *.swo
-log
+log/

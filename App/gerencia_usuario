@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BANCO='database/agenda.db'
+BANCO='../database/agenda.db'
 TABELA='usuario'
 MSG_USO="
 Uso: $0 [ OPÇÃO ]
@@ -12,7 +12,8 @@ OPEÇÃO:
     -b | --buscar - busca de usuario
     -a | --atualizar - login obrigatorio para atualizar
 "
-source lib_db
+source ../Lib/_crud
+
 _pega-dados(){
     echo "Cadastrar de usuario"
     echo -n "Digite o login: "

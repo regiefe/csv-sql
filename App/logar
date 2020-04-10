@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+BANCO='../database/agenda.db'
+TABELA='login'
+source ../Lib/_crud
+
+logar(){
+  senha=$(echo "$2" | shasum | cut -d' ' -f1)
+  sql="select * from $TABELA where login='$1' and senha='$senha'"
+  echo "$sql"
+  #sqlite3 $BANCO "$sql"
+}
+logar "$@"

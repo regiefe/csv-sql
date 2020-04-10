@@ -1,29 +1,32 @@
-# db-sql
-Biblioteca shell script para maniputar tabela no sqlte3.
+----
+# csv_sql
+gera arquivo  sql a partir de um arquivo cvs
 
-# Funcionamento
+![csv to sql](img/parser_cargo.png "Lê csv e gera tabela sql")
 
-Primeiro instale o banco de dadso sqlite.
+## Instalação
 
-Faça um clone do repositorio.
+----
 
-Set a variavel  BANCO com o caminho dos arquivo do banco.
+```
+git clone git@github.com:regiefe/db-sql.git
 
-Set a variavel TABELA com o nome da tabela.
+```
+## Mode de usar
 
-Carrege o arquivo  lib_db  no seu script [ source ou .]
+```
+cd csv_sql/App
+./parser_cvs [ caminho do .csv  ]
 
-E chame as função:
+```
+Tarefas a ser implementado 
 
-
-  	_all [ campo ]  #Para mostra todos os elementos da tabela.
-  
-  	_find [ identificador ] #Primeiro campo da tabela tem que ser o identificandor.
-  
-  	_delete indentificador #Delete apenas uma dado  da tabela de cada vez.
-  
-  	_insert #valor dos argumentos tem que ser igual aos campos da tabela
-  
-   	_update #valor dos argumentos não pode ultapassar os campos da tabela.
-    
-    _tem #verifica se o identificador esta na tabela 
+- [ ]  Cria relação 1 para N
+>> importar o id de N para o relacionamento
+- [ ]  Cria relação N para N
+- >> cria uma nova tabela com id e as 2  chaves estrangeiras que vai relacionar 
+- [ ]  Criar uma interface para em Dialog 
+>> interface para ser logar e ter a algumas arias restritas
+- [ ]  Controle de usuario
+>> inserir, remover, listar e atualizar usuario 
+ 
