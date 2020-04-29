@@ -33,9 +33,9 @@ cria_tabela(){
 
   sqlite3 -separator ";" $BANCO ".import $temp ${tabela}" #importa arquivo csv
   # log da tabela criada
-  echo "$(date +'%Y-%m-%d %H:%M') : Gerado a  tabela ${tabela}" >> ../log/$(echo ${tabela})-log
-  sqlite3 $BANCO "SELECT * FROM ${tabela}" >> ../log/$(echo ${tabela})-log
-  echo >> ../log/$(echo ${tabela})-log
+  # echo "$(date +'%Y-%m-%d %H:%M') : Gerado a  tabela ${tabela}" >> ../log/$(echo ${tabela})-log
+  # sqlite3 $BANCO "SELECT * FROM ${tabela}" >> ../log/$(echo ${tabela})-log
+  # echo >> ../log/$(echo ${tabela})-log
 }
 
 cria_indice(){
@@ -49,7 +49,7 @@ cria_indice(){
   #Renomeia a nova tabela para a antiga
   sqlite3 $BANCO "ALTER TABLE new${tabela} RENAME TO ${tabela}" 
   #log da tabela com id 
-  echo "$(date +'%Y-%m-%d %H:%M') : Gerado o indice da tabela ${tabela}" >> ../log/$(echo ${tabela})-log
+  echo "$(date +'%Y-%m-%d %H:%M') : Gerado tabela com indice ${tabela}" >> ../log/$(echo ${tabela})-log
   sqlite3 $BANCO -header -column "SELECT * FROM ${tabela}" >> ../log/$(echo ${tabela})-log
   echo >> ../log/$(echo ${tabela})-log
 }

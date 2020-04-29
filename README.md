@@ -1,8 +1,8 @@
 ----
 # csv_sql
-gera arquivo  sql a partir de um arquivo cvs
+A partir do csv criada as respectivas tabelas e as relaciona no arquivo .db 
 
-![csv to sql](img/parser_cargo.png "Lê csv e gera tabela sql")
+![csv to sql](img/demo.png "demo tabela criada e relacionada")
 
 ## Instalação
 
@@ -21,12 +21,11 @@ cd csv_sql/App
 ```
 Tarefas a ser implementado 
 
-- [ ]  Cria relação 1 para N
->> importar o id de N para o relacionamento
-- [ ]  Cria relação N para N
-- >> cria uma nova tabela com id e as 2  chaves estrangeiras que vai relacionar 
-- [ ]  Criar uma interface para em Dialog 
->> interface para ser logar e ter a algumas arias restritas
-- [ ]  Controle de usuario
->> inserir, remover, listar e atualizar usuario 
+- [x]  Cria tabela com indice.
+
+- [x]  Cria relação N para N.
+
+- [ ]  Criar uma interface para em Dialog. 
+
+- [ ]  Controle de usuario.
  
