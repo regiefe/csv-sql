@@ -2,6 +2,7 @@
 [ "$BANCO" ] || {
   BANCO='../database/banco.db'
 }
+
 path=$1
 arquivo=$path
 arquivo=${arquivo##*/}
@@ -9,7 +10,9 @@ arquivo=${arquivo##*/}
 tabela=${arquivo%.csv}
 tabela=${tabela:+"t_$tabela"}
 
-temp=$(mktemp)
+[ "$temp"  ] || {
+  temp=$(mktemp)
+}
 
 cria_campos(){
   campos=$(head -n1 "$path" | tr ';' ',' ) # extrai campo(s) do csv
@@ -38,7 +41,7 @@ cria_tabela(){
 cria_indice(){
   cria_tabela
   #Gera uma novo tabela com id
-  sqlite3 $BANCO "CREATE TABLE new${tabela} ( id INTEGER PRIMARY KEY AUTOINCREMENT, $campos )" 
+  sqlite3 $BANCO "CREATE TABLE  IF NOT EXISTS new${tabela} ( id INTEGER PRIMARY KEY AUTOINCREMENT, $campos )" 
   #Exporta os dados para a nova tabela
   sqlite3 $BANCO "INSERT INTO new${tabela} ( $campos ) SELECT * FROM ${tabela}" 
   #Apaga a tabela anterior

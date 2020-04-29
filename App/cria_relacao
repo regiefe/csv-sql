@@ -1,28 +1,24 @@
 #!/bin/bash
 tabelas=$(mktemp)
 relaciona(){
-    BANCO='database/banco.db'    
-    sqlite3 "$BANCO" ".table" | sed 's/ /\n/g' | grep '^t' > "$tabelas"
+    BANCO='../database/banco.db'    
+    tabelas=($(sqlite3 "$BANCO" '.table'))
 
-    #read -p "Escolha as tabelas $(cat $tabelas | sed 's/\n/ /g') para relacionar: " tab_1 tab_2
+    local tabela=${tabelas[1]:2}
+    local relacao=${tabelas[0]:2}
 
-    #echo  "tabelas selecionadas $tab_1 e  tabela $tab_2"
-    #return
-    relacionamento=${tabela:2}
-    relacionamento+=_${relacao:2}
 
-   # sqlite3 $BANCO "PRAGMA FOREIGN_KEYS=on"
-   # sqlite3 $BANCO 
-   echo  "CREATE TABLE ${relacionamento} ( 
+    local relacionamento=${tabela}
+    relacionamento+=_${relacao}
+
+    sqlite3 $BANCO "CREATE TABLE ${relacionamento} ( 
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     ${tabela}_id INTEGER, 
                     ${relacao}_id INTEGER, 
                     FOREIGN KEY (${tabela}_id) REFERENCES ${tabela}(id), 
                     FOREIGN KEY (${relacao}_id) REFERENCES ${relacao}(id))"
                   
-  return
-
-   echo "$(date +'%Y-%m-%d %H:%M') : Criado a tabela ${relacionamento}" > log/$(echo ${relacionamento})-log
+   echo "$(date +'%Y-%m-%d %H:%M') : Criado a tabela ${relacionamento}" > ../log/$(echo ${relacionamento})-log
 
    sqlite3 $BANCO "INSERT INTO ${relacionamento} VALUES (null, 1,1 )"
    sqlite3 $BANCO "INSERT INTO ${relacionamento} VALUES (null, 1,7 )"
@@ -33,13 +29,14 @@ relaciona(){
 
   
 
-   sqlite3 -column -header $BANCO "CREATE VIEW ${relacionamento:+v$relacionamento} AS SELECT * FROM  ${tabela} 
+   sqlite3 -column -header $BANCO "CREATE VIEW ${relacionamento:+v$relacionamento} AS SELECT * FROM
+   ${tabela:+t_$tabela} 
    JOIN ${relacionamento}
-   ON ${tabela}.id=${relacionamento}.${tabela}_id 
-   JOIN ${relacao} 
-   ON ${relacao}.id=${relacionamento}.${relacao}_id" 
+   ON ${tabela:+t_$tabela}.id=${relacionamento}.${tabela}_id 
+   JOIN ${relacao:+t_$relacao} 
+   ON ${relacao:+t_$relacao}.id=${relacionamento}.${relacao}_id" 
 
-   echo "$(date +'%Y-%m-%d %H:%M') : Criado a view ${relacionamento:+v$relacionamento}" >> log/$(echo ${relacionamento})-log
-   sqlite3 -column -header $BANCO "SELECT * FROM ${relacionamento:+v$relacionamento}" >> log/$(echo ${relacionamento})-log
+   echo "$(date +'%Y-%m-%d %H:%M') : Criado a view ${relacionamento:+v$relacionamento}" >> ../log/$(echo ${relacionamento})-log
+   sqlite3 -column -header $BANCO "SELECT * FROM ${relacionamento:+v$relacionamento}" >> ../log/$(echo ${relacionamento})-log
 }
 relaciona

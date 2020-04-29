@@ -29,13 +29,13 @@ _find(){
     [ ! "$1" ] || {
         sql+="WHERE ${campos[1]}='$1'"
     }
-    sqlite3 $BANCO "$sql"
+    sqlite3 "$BANCO" "$sql"
 }
 
 _tem(){
     tem=$(_find $1 | cut -d '|' -f2)
     [ "$tem" ] || {
-        echo  'Epa! não ninguem com esse nome'
+        echo  'Epa! não tem ninguem com esse nome'
         return 1
     }
 }
@@ -44,7 +44,7 @@ _delete(){
     _campos
     _tem $1
     local sql="DELETE FROM $TABELA WHERE ${campos[0]}='$tem';" 
-    echo "$sql" | sqlite3 $BANCO 
+    sqlite3 "$BANCO" "$sql"
     echo  "$TABELA '$tem' limado !!"
 }
 
@@ -56,9 +56,9 @@ _insert(){
     }
     local valor=$(echo "$@" | sed "s/ /', '/g;s/.*/'&'/") 
     valor=$(echo "$valor" | sed 's/+/ /g')  
-    local field=$(echo ${campos[@]} | sed 's/ /, /g')
+    local field=$(echo "${campos[@]}" | sed 's/ /, /g')
     local sql="INSERT INTO $TABELA ( $field ) VALUES ( $valor ); "
-    sqlite3 $BANCO "$sql"
+    sqlite3 "$BANCO" "$sql"
     echo  "'$1' inserido com sucesso !!"
 }
 
@@ -77,6 +77,6 @@ _update(){
     set=$(echo "$set" |  sed "s/=''$//g;s/ //;s/ /, /g")
     set=$(echo $set | sed 's/+/ /g;s/,$//')
     local sql="update $TABELA set $set where ${campos[0]}='$1' "
-    sqlite3 $BANCO "$sql" 
+    sqlite3 "$BANCO" "$sql"
     echo  "'$1' atualizado com sucesso !!"
 }

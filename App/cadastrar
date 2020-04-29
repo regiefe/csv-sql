@@ -15,14 +15,14 @@ cadastrar(){
   echo
   read -s -p  "Confirmar: " 
   echo
-  [ "$senha" == "$REPLY"  ] || {
+  [ -n "$senha" -a "$senha" == "$REPLY"  ] || {
     echo  "Senha invalida"
     return 1
   }
   _encrypt "$senha"
   sql="INSERT INTO $TABELA (login, senha) VALUES ( '$login', '$senha')"
   sqlite3 "$BANCO" "$sql"
-  sqlite3 -column -header $BANCO "SELECT *  FROM $TABELA"
+  sqlite3 -column -header $BANCO "SELECT *  FROM $TABELA WHERE login='$login'"
 }
 
 cadastrar
