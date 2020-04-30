@@ -1,17 +1,25 @@
 ----
 # csv_sql
+
 Cria um banco de dados a partir do csv e cria relação entre as tabelas  
 
+```sh
+cd teste/ 
+./csv_tabela_relacao  
+```
 ![csv to sql](img/demo.png "demo tabela criada e relacionada")
 
 
 Tarefas a ser implementado 
 
-- [x]  Cria tabela com indice.
+- [x]  CRUD Create Read Update Delete.
 
-- [x]  Cria relação N para N.
+- [x]  Le arquivos CVS gerando uma tabela com indice.
 
-- [ ]  Criar uma interface para em Dialog. 
+- [x]  Cria relação N para N
 
-- [ ]  Controle de usuario.
- 
+- [ ]  Controle de acesso.
+
+- [ ]  Hash de assinatura de modificação de arquivo.
+
+- [ ]  Interface para em Dialog. 
