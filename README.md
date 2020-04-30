@@ -23,3 +23,5 @@ Tarefas a ser implementado
 - [ ]  Hash de assinatura de modificação de arquivo.
 
 - [ ]  Interface para em Dialog. 
+
+[Post LinkedIn](https://www.linkedin.com/pulse/transforme-planilhas-em-banco-relacionados-reginaldo-ferreira-silva/?published=t)
