@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+_ux(){
+  local box=(
+      '--infobox' 
+      '--msgbox' 
+      '--inputbox' 
+      '--passwordbox' 
+      '--yesno' 
+      '--textbox'
+      )
+  local param=("$@")
+  tamanho='0 0'
+  dialog                                                 \
+    --stdout                                             \
+    --backtitle  "${param[3]:-$0}"                       \
+    --title  "${param[1]:-padrao}"                       \
+  $(echo "${box[$1]:-${box[0]}}") "${param[2]:-teste}"   \
+  $(echo "$tamanho")
+}

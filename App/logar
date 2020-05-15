@@ -1,13 +1,23 @@
 #!/usr/bin/env bash
-
 BANCO='../database/agenda.db'
 TABELA='login'
-source ../Lib/_crud
+source ../Lib/_ux
 
 logar(){
   senha=$(echo "$2" | shasum | cut -d' ' -f1)
-  sql="select * from $TABELA where login='$1' and senha='$senha'"
+  sql="SELECT * FROM $TABELA WHERE login='$1' AND senha='$senha'"
   echo "$sql"
-  #sqlite3 $BANCO "$sql"
+  
+  logado=$(sqlite3 $BANCO "$sql") 
+  [ "$logado" ] && {
+    _ux 1 'Logado'  "Bem vindo '$1'"
+  } || {
+    _ux 1  'Acesso  restrito' ''
+    exit 1
+  }
 }
-logar "$@"
+
+nome=$(_ux 2 'Nome' 'Digite seu nome' 'Autenticação')
+senha=$(_ux 3 'Senha' 'Digite sua senha' 'Autenticação')
+
+logar "$nome" "$senha"
