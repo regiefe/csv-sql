@@ -20,11 +20,18 @@ _pega-dados(){
     [  "$(_tem $login )" ] || {
         return 1
     }
-    nome=$(_ex  'Cadastro de Usuaro' ' Digite o nome')
-    nome=$(echo "$nome" | sed 's/ /+/g')
+    nome=$(_ux 2 'Cadastro de Usuaro' ' Digite o nome')
     idade=$(_ux 2 'Cadastro de Usuaro' ' Digite o idade')
-    echo -n "Digite o sexo: "
-    read sexo
+    _ux 4 'Cadastro de Usuaro' 'Masculino=sim Femenino=não'
+
+    if [ "$?" ];then
+      sexo='M'
+    else
+      sexo='F'
+    fi
+
+    printf  "Login: $login \nNome: $nome \nIdade: $idade \nSexo: $sexo"
+   exit 
 }
 
 cadastrar(){
