@@ -25,3 +25,5 @@ Tarefas a ser implementado
 - [ ]  Interface para em Dialog. 
 
 [Post LinkedIn](https://www.linkedin.com/pulse/transforme-planilhas-em-banco-relacionados-reginaldo-ferreira-silva/?published=t)
+
+&copy; 2020  regiefe@gmail.com
