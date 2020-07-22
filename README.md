@@ -11,7 +11,7 @@ Tarefas a ser implementado
 
 - [x]  Cria relação N para N.
 
-- [ ]  Criar uma interface para em Dialog. 
+- [x]  Criar uma interface para em Dialog. 
 
 - [ ]  Controle de usuario.
  
