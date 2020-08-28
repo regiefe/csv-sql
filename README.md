@@ -14,7 +14,7 @@ Tarefas a ser implementado
 
 - [x]  CRUD Create Read Update Delete.
 
-- [x]  Le arquivos CVS gerando uma tabela com indice.
+- [x]  Le arquivos CSV gerando uma tabela com indice.
 
 - [x]  Cria relação N para N
 
