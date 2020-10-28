@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+BANCO='../database/agenda.db'
+TABELA='usuario'
+MSG_USO="
+Uso: $0 [ OPÇÃO ]
+
+OPEÇÃO: 
+    -c | --cadastrar - Cadastro de usuario
+    -r | --remover - Remover usuario
+    -l | --listar - listar usuario 
+    -b | --buscar - busca de usuario
+    -a | --atualizar - login obrigatorio para atualizar
+"
+source ../Lib/_crud
+source ../Lib/_window
+
+_pega-dados(){
+    login=$(_window 2 'Cadastro de Usuaro' ' Digite o login')
+    [  "$(_tem $login )" ] || {
+        return 1
+    }
+    nome=$(_window 2 'Cadastro de Usuaro' ' Digite o nome')
+    idade=$(_window 2 'Cadastro de Usuaro' ' Digite o idade')
+    _window 4 'Cadastro de Usuaro' 'Masculino=sim Femenino=não'
+
+    if [ "$?" ];then
+      sexo='M'
+    else
+      sexo='F'
+    fi
+
+    printf  "Login: $login \nNome: $nome \nIdade: $idade \nSexo: $sexo"
+   exit 
+}
+
+cadastrar(){
+    _pega-dados
+    _insert $login $nome $idade $sexo
+}
+
+remover(){
+    echo "Remover de usuario"
+    _all login| sed 's/\n / - /g' 
+    usuario=$(_window 2 'Cadastro de Usuaro' ' Digite o login que sera removido')
+    _delete $usuario
+}
+
+listar(){
+    echo "Listar de usuario"
+    _find
+}
+
+buscar(){
+    usuario=$(_window 'Cadastro de Usuaro' ' Digite o login')
+    _find $usuario
+}
+
+atualizar(){
+    buscar 
+}
+
+case $1 in
+    -c | --cadastrar) cadastrar ;;
+    -r | --remover) remover ;;
+    -l | --listar) listar ;;
+    -b | --buscar) buscar ;;
+    -a | --atualizar) atualizar ;;
+
+    *)
+        echo "$MSG_USO"
+esac

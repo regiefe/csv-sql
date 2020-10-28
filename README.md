@@ -18,12 +18,15 @@ Tarefas a ser implementado
 
 - [x]  Cria relação N para N
 
-- [ ]  Controle de acesso.
+- [X]  Controle de acesso.
 
 - [ ]  Hash de assinatura de modificação de arquivo.
 
 - [ ]  Interface para em Dialog. 
 
+- [x]  Criar uma interface para em Dialog. 
+
 [Post LinkedIn](https://www.linkedin.com/pulse/transforme-planilhas-em-banco-relacionados-reginaldo-ferreira-silva/?published=t)
+
 
 &copy; 2020  regiefe@gmail.com
