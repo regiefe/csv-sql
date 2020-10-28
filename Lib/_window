@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+help(){
+echo "
+Uso: _window
+
+_window [ 1º:number ] [ 2º:string ] [ 3º:string ] [ 4º:string ]
+
+Primeiro paramentro:
+    box 0=default[ infobox ] 1=msgbox 2=inputbox 3=passwordbox 4=yesno 5=textbox
+
+                                                            _fundo ____________ 
+                                                           |  _janela________  |
+                                                           | |               | |
+  _window [ tipo ] [ 'janela' ] [ 'mesagem'  ] [ 'fundo' ] | |   mensagem    | |
+                                                           | |_______________| |
+                                                           |___________________| 
+                                        
+Setar a variavel tamanho:     
+tamanho default [ '0 0' ]  [ 'altura largura' ] da janela 
+"
+}
+
+[[  "$1" == '-h' ||  "$1" == '--help' ]] && {
+  help
+  return 0
+}
+
+tamanho='0 0'
+_window(){
+  local box=(
+      '--infobox' 
+      '--msgbox' 
+      '--inputbox' 
+      '--passwordbox' 
+      '--yesno' 
+      '--textbox'
+      )
+  local param=("$@")
+  dialog                                                 \
+    --stdout                                             \
+    --backtitle  "${param[3]:-$0}"                       \
+    --title  "${param[1]:-padrao}"                       \
+  $(echo "${box[$1]:-${box[0]}}") "${param[2]:-teste}"   \
+  $(echo "$tamanho")
+}

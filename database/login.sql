@@ -1,7 +1,7 @@
-drop table login;
-create table login (
-    id integer primary key autoincrement,
-    login varchar(50) not null,
-    senha varchar(100) not null
+DROP TABLE login;
+CREATE TABLE login (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    login VARCHAR(50) NOT NULL,
+    senha VARCHAR(100) NOT NULL
 );
 .schema login

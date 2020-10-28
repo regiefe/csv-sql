@@ -13,16 +13,16 @@ OPEÇÃO:
     -a | --atualizar - login obrigatorio para atualizar
 "
 source ../Lib/_crud
-source ../Lib/_ux
+source ../Lib/_window
 
 _pega-dados(){
-    login=$(_ux 2 'Cadastro de Usuaro' ' Digite o login')
+    login=$(_window 2 'Cadastro de Usuaro' ' Digite o login')
     [  "$(_tem $login )" ] || {
         return 1
     }
-    nome=$(_ux 2 'Cadastro de Usuaro' ' Digite o nome')
-    idade=$(_ux 2 'Cadastro de Usuaro' ' Digite o idade')
-    _ux 4 'Cadastro de Usuaro' 'Masculino=sim Femenino=não'
+    nome=$(_window 2 'Cadastro de Usuaro' ' Digite o nome')
+    idade=$(_window 2 'Cadastro de Usuaro' ' Digite o idade')
+    _window 4 'Cadastro de Usuaro' 'Masculino=sim Femenino=não'
 
     if [ "$?" ];then
       sexo='M'
@@ -42,7 +42,7 @@ cadastrar(){
 remover(){
     echo "Remover de usuario"
     _all login| sed 's/\n / - /g' 
-    usuario=$(_ux 2 'Cadastro de Usuaro' ' Digite o login que sera removido')
+    usuario=$(_window 2 'Cadastro de Usuaro' ' Digite o login que sera removido')
     _delete $usuario
 }
 
@@ -52,7 +52,7 @@ listar(){
 }
 
 buscar(){
-    usuario=$(_ux 'Cadastro de Usuaro' ' Digite o login')
+    usuario=$(_window 'Cadastro de Usuaro' ' Digite o login')
     _find $usuario
 }
 

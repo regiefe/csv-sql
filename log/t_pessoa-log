@@ -1,16 +1,7 @@
-2020-04-07 11:45 : Criado os campo da tabela t_pessoa
+2020-10-23 17:54 : Criado os campo da tabela t_pessoa
 CREATE TABLE t_pessoa ( nome text, salario text );
 
-2020-04-07 11:45 : Gerado a  tabela t_pessoa
-Reginaldo|5600
-Vanessa|2500
-Maria|1500
-Tereza|1800
-Carolina|2100
-Mariana|3200
-Heitor|7300
-
-2020-04-07 11:45 : Gerado o indice da tabela t_pessoa
+2020-10-23 17:54 : Gerado tabela com indice t_pessoa
 id          nome        salario   
 ----------  ----------  ----------
 1           Reginaldo   5600      

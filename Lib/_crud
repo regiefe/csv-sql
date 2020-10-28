@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 [ "$BANCO"  ] || {
-    echo  "Set o caminho do banco na variavel 'BANCO' "
+    msg="Set o caminho do banco na variavel 'BANCO' "
     exit 1
 }
 
 [ "$TABELA"  ] || {
-    echo  "Informe a TABELA na variavel 'TABELA'"
+    msg="Informe a TABELA na variavel 'TABELA'"
     exit 1
 }
 
@@ -35,7 +35,7 @@ _find(){
 _tem(){
     tem=$(_find $1 | cut -d '|' -f2)
     [ "$tem" ] || {
-        echo  'Epa! não tem ninguem com esse nome'
+      msg='Epa! não tem ninguem com esse nome'
         return 1
     }
 }
@@ -45,21 +45,21 @@ _delete(){
     _tem $1
     local sql="DELETE FROM $TABELA WHERE ${campos[0]}='$tem';" 
     sqlite3 "$BANCO" "$sql"
-    echo  "$TABELA '$tem' limado !!"
+    msg="$TABELA '$tem' limado !!"
 }
 
 _insert(){
     _campos
     [[ "$#" -eq "$qto"  ]] || {
-        echo "Esta faltando informação! "
+        msg="Esta faltando informação! "
         return 1
     }
-    local valor=$(echo "$@" | sed "s/ /', '/g;s/.*/'&'/") 
-    valor=$(echo "$valor" | sed 's/+/ /g')  
-    local field=$(echo "${campos[@]}" | sed 's/ /, /g')
+    local valor=$(msg="$@" | sed "s/ /', '/g;s/.*/'&'/") 
+    valor=$(msg="$valor" | sed 's/+/ /g')  
+    local field=$(msg="${campos[@]}" | sed 's/ /, /g')
     local sql="INSERT INTO $TABELA ( $field ) VALUES ( $valor ); "
     sqlite3 "$BANCO" "$sql"
-    echo  "'$1' inserido com sucesso !!"
+    msg="'$1' inserido com sucesso !!"
 }
 
 _update(){
@@ -67,16 +67,16 @@ _update(){
     _tem "$1" 
     [  "$tem" ] || return
     [[ "$qto" -ge "$#" ]] || {
-        echo "Excedeu a quantidade de campos de '$TABELA'"
+        msg="Excedeu a quantidade de campos de '$TABELA'"
         return 1
     }
     local valor=($@)  
     for ((i=1; i<="$qto"; i++ )){
         local set+=" ${campos[$i]}='${valor[$i]}'"  
     }
-    set=$(echo "$set" |  sed "s/=''$//g;s/ //;s/ /, /g")
-    set=$(echo $set | sed 's/+/ /g;s/,$//')
+    set=$(msg="$set" |  sed "s/=''$//g;s/ //;s/ /, /g")
+    set=$(msg=$set | sed 's/+/ /g;s/,$//')
     local sql="update $TABELA set $set where ${campos[0]}='$1' "
     sqlite3 "$BANCO" "$sql"
-    echo  "'$1' atualizado com sucesso !!"
+    msg="'$1' atualizado com sucesso !!"
 }

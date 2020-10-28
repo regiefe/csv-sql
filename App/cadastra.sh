@@ -1,62 +1,69 @@
 #!/usr/bin/env bash
 
-BANCO='../database/agenda.db'
+BANCO='database/usuario.db'
 TABELA='login'
-source ../Lib/_crud
+
+source Lib/_crud
 
 _encrypt(){
-    senha_encrypt=$(echo "$@" | shasum | cut -d' ' -f1) 
+    senha_encrypt=$(msg="$@" | shasum | cut -d' ' -f1) 
 }
+
 _check_login(){
     login=$*
     [ ! "$(sqlite3  $BANCO "SELECT * FROM $TABELA WHERE login='$login'")" ] || {
-        echo "'$login' já foi cadastrado"
-        exit    
+        msg="'$login' já foi cadastrado"
+      return 1
     }
 }
+
 cadastrar(){
-    read -p "Digite o login: " login
-    [ -n $login ] || {
-        echo "Login  invalido"
+    local login="$1"
+    local senha="$2"
+
+    [ -n "$login" ] || {
+        msg="Login  invalido"
         return 1
     }
-    _check_login $login
-    read -s -p  "Digite a senha: " senha
-    [ -n $senha ] || {
-        echo "Senha invalido"
+
+    _check_login  $login
+
+    [ -n "$senha" ] || {
+        msg="Senha invalido"
         return 1
     }
-    echo
-    read -s -p  "Confirmar: " 
-    echo
+    
+
     [ -n "$senha" -a "$senha" == "$REPLY"  ] || {
-        echo  "Senha invalida"
+        msg="Senha invalida"
         return 1
     }
+
     _encrypt "$senha"
+
     sql="INSERT INTO $TABELA (login, senha) VALUES ( '$login', '$senha_encrypt')"
     sqlite3 "$BANCO" "$sql"
-    echo "Cadastrado com  sucesso."
+    msg="Cadastrado com  sucesso."
     sqlite3 -column -header $BANCO "SELECT * FROM $TABELA WHERE login='$login'"
 }
 
 remover(){
+    remove="$@"
     sqlite3 -column $BANCO "SELECT login  FROM $TABELA" 
-    read -p "Digite quem sera eliminado: " remove
     sqlite3 -column $BANCO "DELETE FROM $TABELA WHERE login='$remove'"
-    echo "'$remove' foi limado."
+    msg="'$remove' foi limado."
 }
 
 atualiza_senha(){
     read -p "Digite o login para atualiza a senha: " login
     [ -n "$login" ] || {
-        echo "Login  invalido"
+        msg="Login  invalido"
         return 1
     }
     read -p "Confirma a senha antiga: " senha_antiga
     _encrypt "$senha_antiga"
     [ "$(sqlite3 $BANCO "SELECT * FROM $TABELA WHERE senha='$senha_encrypt'")" ] || {
-        echo "Login o senha invalido"
+        msg="Login o senha invalido"
         exit 1
     } 
     read -s -p  "Digite a nova senha: " senha_nova
@@ -64,12 +71,12 @@ atualiza_senha(){
     read -s -p  "Confirmar a nova: " 
     echo
     [ -n "$senha_nova" -a "$senha_nova" == "$REPLY"  ] || {
-        echo  "Senha invalida"
+        msg="Senha invalida"
         return 1
     }
     _encrypt "$senha_nova"
-    sqlite3 $BANCO "update $TABELA set senha='$senha_encrypt'  WHERE login='$login'" 
-    echo "'$login' senha atualizada."
+    sqlite3 $BANCO "UPDATE $TABELA SET senha='$senha_encrypt'  WHERE login='$login'" 
+    msg="'$login' senha atualizada."
 
 }
 atualiza_senha

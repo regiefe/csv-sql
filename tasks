@@ -1,9 +1,0 @@
-- Cria relação 1 para N
-    importar o id de N para o relacionamento
-- Cria relação N para N
-    cria uma nova tabela com id e as 2  chaves estrangeiras que vai relacionar 
-- Criar uma interface para em Dialog 
-    interface para ser logar e ter a algumas arias restritas
-- Controle de usuario
-    inserir, remover, listar e atualizar usuario 
- 

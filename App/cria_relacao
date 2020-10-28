@@ -1,5 +1,6 @@
 #!/bin/bash
 tabelas=$(mktemp)
+
 relaciona(){
     BANCO='../database/banco.db'    
     tabelas=($(sqlite3 "$BANCO" '.table'))
@@ -40,3 +41,7 @@ relaciona(){
    sqlite3 -column -header $BANCO "SELECT * FROM ${relacionamento:+v$relacionamento}" >> ../log/$(echo ${relacionamento})-log
 }
 relaciona
+
+
+
+
