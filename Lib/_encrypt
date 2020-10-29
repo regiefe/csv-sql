@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+_encrypt(){
+  [ -n $@  ] || {
+    msg='Não tem nada para encryptar'
+    return 1
+  }
+    senha_encrypt=$(echo "$@" | shasum | cut -d' ' -f1) 
+}

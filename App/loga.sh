@@ -2,7 +2,6 @@
 
 BANCO='database/usuario.db'
 TABELA='login'
-source Lib/_window
 
 logar(){
   login=$1
@@ -12,10 +11,14 @@ logar(){
   
   logado=$(sqlite3 $BANCO "$sql") 
   [ "$logado" ] && {
-    _window 1 'Logado'  "Bem vindo '$1'"
+    _window 0 'Logado com  sucesso'  "Bem vindo '$1'" 'Esta logado'
+    sleep 1
+    return 0
   } || {
-    _window 1  'Acesso  restrito' ''
-    exit 1
+    tamanho='5 40'
+    _window 0  'Acesso negado' "\n Login ou senha invalido" 
+   sleep 2
+   exit 1
   }
 }
 

@@ -4,10 +4,7 @@ BANCO='database/usuario.db'
 TABELA='login'
 
 source Lib/_crud
-
-_encrypt(){
-    senha_encrypt=$(msg="$@" | shasum | cut -d' ' -f1) 
-}
+source Lib/_encrypt
 
 _check_login(){
     login=$*

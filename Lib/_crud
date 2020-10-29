@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 [ "$BANCO"  ] || {
-    msg="Set o caminho do banco na variavel 'BANCO' "
+    echo "Set o caminho do banco na variavel 'BANCO' "
     exit 1
 }
 
 [ "$TABELA"  ] || {
-    msg="Informe a TABELA na variavel 'TABELA'"
+    echo "Informe a TABELA na variavel 'TABELA'"
     exit 1
 }
 
@@ -29,13 +29,14 @@ _find(){
     [ ! "$1" ] || {
         sql+="WHERE ${campos[1]}='$1'"
     }
+    
     sqlite3 "$BANCO" "$sql"
 }
 
 _tem(){
     tem=$(_find $1 | cut -d '|' -f2)
-    [ "$tem" ] || {
-      msg='Epa! não tem ninguem com esse nome'
+    [ -n "$tem" ] || {
+      echo 'Epa! não tem ninguem com esse nome'
         return 1
     }
 }
@@ -51,12 +52,12 @@ _delete(){
 _insert(){
     _campos
     [[ "$#" -eq "$qto"  ]] || {
-        msg="Esta faltando informação! "
+        echo "Esta faltando informação! "
         return 1
     }
-    local valor=$(msg="$@" | sed "s/ /', '/g;s/.*/'&'/") 
-    valor=$(msg="$valor" | sed 's/+/ /g')  
-    local field=$(msg="${campos[@]}" | sed 's/ /, /g')
+    local valor=$(echo "$@" | sed "s/ /', '/g;s/.*/'&'/") 
+    valor=$(echo "$valor" | sed 's/+/ /g')  
+    local field=$(echo "${campos[@]}" | sed 's/ /, /g')
     local sql="INSERT INTO $TABELA ( $field ) VALUES ( $valor ); "
     sqlite3 "$BANCO" "$sql"
     msg="'$1' inserido com sucesso !!"
@@ -65,18 +66,19 @@ _insert(){
 _update(){
     _campos
     _tem "$1" 
-    [  "$tem" ] || return
+    [  "$tem" ] || return 1
     [[ "$qto" -ge "$#" ]] || {
-        msg="Excedeu a quantidade de campos de '$TABELA'"
+        echo "Excedeu a quantidade de campos de '$TABELA'"
         return 1
     }
     local valor=($@)  
     for ((i=1; i<="$qto"; i++ )){
         local set+=" ${campos[$i]}='${valor[$i]}'"  
     }
-    set=$(msg="$set" |  sed "s/=''$//g;s/ //;s/ /, /g")
-    set=$(msg=$set | sed 's/+/ /g;s/,$//')
+    set=$(echo "$set" |  sed "s/=''$//g;s/ //;s/ /, /g")
+    set=$(echo $set | sed 's/+/ /g;s/,$//')
     local sql="update $TABELA set $set where ${campos[0]}='$1' "
+    echo "$sql"
     sqlite3 "$BANCO" "$sql"
-    msg="'$1' atualizado com sucesso !!"
+    echo "'$1' atualizado com sucesso !!"
 }

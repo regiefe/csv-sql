@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 
-source App/logar.sh 
-nome=$(_ux 2 'Login' 'Digite seu nome' 'Autenticação do usuario')
-senha=$(_ux 3 'Senha' 'Digite sua senha' 'Autenticação do usuario')
+source Lib/_window
+source App/loga.sh 
+source App/menu.sh
 
-clear
-echo "NOME: $nome SENHA: $senha"
-#logar "$nome" "$senha"
+nome=$(_window 2 'Login' 'Digite seu nome' 'Autenticação do usuario')
+senha=$(_window 3 'Senha' 'Digite sua senha' 'Autenticação do usuario')
+
+ logar "$nome" "$senha" 
+ menu
+
+
 
 
 
