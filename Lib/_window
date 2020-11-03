@@ -38,6 +38,7 @@ _window(){
       )
   local param=("$@")
   dialog                                                 \
+    --nocancel                                           \
     --stdout                                             \
     --backtitle  "${param[3]:-$0}"                       \
     --title  "${param[1]:-padrao}"                       \

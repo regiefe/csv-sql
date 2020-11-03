@@ -10,12 +10,13 @@ logar(){
   echo "$sql"
   
   logado=$(sqlite3 $BANCO "$sql") 
+  tamanho='5 40'
+
   [ "$logado" ] && {
-    _window 0 'Logado com  sucesso'  "Bem vindo '$1'" 'Esta logado'
+    _window 0 'Logado com  sucesso'  "\nBem vindo '$1'" 'Esta logado'
     sleep 1
     return 0
   } || {
-    tamanho='5 40'
     _window 0  'Acesso negado' "\n Login ou senha invalido" 
    sleep 2
    exit 1

@@ -11,28 +11,41 @@ senha(){
     _window 0 'Trocando a senha' 'Digite uma nova senha ' 
     sleep $transicao
 }
-outro(){
-    _window 0 'Nova opção ' 'Informatido de nova opcao' 
+exporta(){
+    _window 0 'Exporta' 'Escolha a tabela que vai ser exportada' 
     sleep $transicao
+    sqlite3 $BANCO "$sql" 
+}
+sair(){
+    sair=$( _window 4 '' 'Quer mesmo sair agora' ) 
+
+    [ "$?"  ] && {
+      _window 0 'saida' "\n   Até logo"
+      sleep $transicao
+     exit 0
+    }
 }
 menu(){
     while :  ; do
-        escolha="$(dialog --stdout                    \
+        escolha="$(dialog                             \
+            --stdout                                  \
+            --nocancel                                \
+            --ok-label 'confirme'                     \
             --title 'Menu'                            \
             --menu "Usuario: '$login'"                \
             0 0 0                                     \
-            arquivo     'Arquivo CSV'                 \
-            senha       'Trocar a senha'              \
-            outro       'outra Opção'                 \
-            sair        'Sair do  sistema'              
+            arquivo  'Arquivo CSV'                    \
+            senha    'Trocar a senha'                 \
+            exporta  'Exporta tabela para planilha'   \
+            sair     'Sair do  sistema'              
             )"
 
 
         case "$escolha" in 
             arquivo ) arquivo ;;
             senha )  senha ;;
-            outro )  outro;;
-            sair ) break ;;
+            exporta )  exporta;;
+            sair ) sair ;;
         esac
     done
 }

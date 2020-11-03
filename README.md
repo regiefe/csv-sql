@@ -1,30 +1,43 @@
-----
-# csv_sql
 
-Cria um banco de dados a partir do csv e cria relação entre as tabelas  
+ # csv_sql 
+
+Conversor arquivo CSV em tabela no Sqlite3 e cria relação entre tabelas.   
+
+----
+
+### Dependeciaas
+
+    Sqlite3   Dialog   Bash 
+
+### Instalação      
+
 
 ```sh
-cd teste/ 
-./csv_tabela_relacao  
+git clone https://github.com/regiefe/csv-sql.git
+cd csv-sql
+./start.sh
+
 ```
-![csv to sql](img/demo.png "demo tabela criada e relacionada")
+![csv to sql](img/inicio.png "demo tabela criada e relacionada")
 
 
-Tarefas a ser implementado 
+###  Tarefas a ser implementado
 
-- [x]  CRUD Create Read Update Delete.
+- [x] CRUD Create Read Update Delete.
 
-- [x]  Le arquivos CSV gerando uma tabela com indice.
+- [x] Le arquivos CSV gerando uma tabela com indice.
 
-- [x]  Cria relação N para N
+- [x] Cria relação N para N
 
-- [X]  Controle de acesso.
+- [X] Controle de acesso.
 
-- [ ]  Hash de assinatura de modificação de arquivo.
+- [x] Criar uma interface para em Dialog. 
 
-- [ ]  Interface para em Dialog. 
+- [ ] Converte banco de dados em Planilha
 
-- [x]  Criar uma interface para em Dialog. 
+- [ ] Hash de assinatura de modificação de arquivo.
+
+
 
 [Post LinkedIn](https://www.linkedin.com/pulse/transforme-planilhas-em-banco-relacionados-reginaldo-ferreira-silva/?published=t)
 
