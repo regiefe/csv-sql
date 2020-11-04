@@ -26,7 +26,6 @@ tamanho default [ '0 0' ]  [ 'altura largura' ] da janela
   return 0
 }
 
-tamanho='0 0'
 _window(){
   local box=(
       '--infobox' 

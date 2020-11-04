@@ -1,26 +1,20 @@
 #!/usr/bin/env bash
 
-BANCO='database/usuario.db'
-TABELA='login'
-
 logar(){
   login=$1
   senha=$(echo "$2" | shasum | cut -d' ' -f1)
-  sql="SELECT * FROM $TABELA WHERE login='$login' AND senha='$senha'"
-  echo "$sql"
-  
-  logado=$(sqlite3 $BANCO "$sql") 
-  tamanho='5 40'
+  sql="SELECT login, senha FROM '$TABELA' WHERE login='$login' AND senha='$senha'"
+  sucesso=$(sqlite3 "$BANCO" "$sql")
 
-  [ "$logado" ] && {
-    _window 0 'Logado com  sucesso'  "\nBem vindo '$1'" 'Esta logado'
-    sleep 1
-    return 0
-  } || {
-    _window 0  'Acesso negado' "\n Login ou senha invalido" 
-   sleep 2
-   exit 1
-  }
+ if [ -n "$sucesso" ] ; then
+   _window 0 'Logado com  sucesso'  "\n Bem vindo '$1'" 'Esta logado'
+   sleep $transicao
+   return 0
+ else
+  _window 0  'Acesso negado' "\n Login ou senha invalido" 
+  sleep $transicao
+  exit 1
+fi
 }
 
 
