@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BANCO='../database/agenda.db'
+BANCO='database/agenda.db'
 TABELA='usuario'
 MSG_USO="
 Uso: $0 [ OPÇÃO ]
@@ -12,15 +12,17 @@ OPEÇÃO:
     -b | --buscar     - busca de usuario
     -a | --atualizar  - login obrigatorio para atualizar
 "
-source ../Lib/_crud
+source Lib/_crud
 
 _pega-dados(){
     read -p 'Digite o login: ' login
     read -s -p 'Digite o senha: ' senha
     if [[  "$login" = 'teste' &&  "$senha" = '123'  ]];then
-
-      echo 'true'
-      exit 1 
+      echo 'Passou'
+      return 0 
+    else
+      echo  'não passou'
+      return 1
     fi
 }
 
@@ -57,7 +59,8 @@ atualizar(){
     buscar 
 }
 
-case $1 in
+set_menu(){
+  case $1 in
     -c | --cadastrar) cadastrar ;;
     -r | --remover) remover ;;
     -l | --listar) listar ;;
@@ -65,5 +68,6 @@ case $1 in
     -a | --atualizar) atualizar ;;
 
     *)
-        echo "$MSG_USO"
-esac
+      echo "$MSG_USO"
+  esac
+}

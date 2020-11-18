@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-
-BANCO='database/usuario.db'
-TABELA='login'
-
 source Lib/_crud
 source Lib/_encrypt
 
@@ -52,30 +48,26 @@ remover(){
 }
 
 atualiza_senha(){
-    read -p "Digite o login para atualiza a senha: " login
-    [ -n "$login" ] || {
-        msg="Login  invalido"
-        return 1
-    }
-    read -p "Confirma a senha antiga: " senha_antiga
-    _encrypt "$senha_antiga"
-    [ "$(sqlite3 $BANCO "SELECT * FROM $TABELA WHERE senha='$senha_encrypt'")" ] || {
-        msg="Login o senha invalido"
-        exit 1
-    } 
-    read -s -p  "Digite a nova senha: " senha_nova
-    echo
-    read -s -p  "Confirmar a nova: " 
-    echo
-    [ -n "$senha_nova" -a "$senha_nova" == "$REPLY"  ] || {
-        msg="Senha invalida"
-        return 1
-    }
-    _encrypt "$senha_nova"
-    sqlite3 $BANCO "UPDATE $TABELA SET senha='$senha_encrypt'  WHERE login='$login'" 
-    msg="'$login' senha atualizada."
+  senha_antiga=$(_window 3 'Atualizando senha' 'Confirme a senha antiga:')
+  logar "$login" "$senha_antiga"
 
+  if [ $? -eq 0 ]; then
+    senha_nova=$(_window 3 'Atualizando senha' 'Digite a nova senha')
+    senha_reply=$(_window 3 'Atualizando senha' 'Confirme a nova senha: ')
+    [ -n "$senha_nova" -a "$senha_nova" == "$senha_reply"  ] || return 1 
+    _encrypt "$senha_nova"
+    sql="UPDATE $TABELA SET senha='$senha_encrypt'  WHERE login='$login'" 
+
+    sqlite3 "$BANCO" "$sql"
+    tamanho='5 40'
+   _window 0 'Sucesso' "\n   '$login' senha atualizada."
+  else
+    tamanho='5 40'
+    _window 0 "Erro" "\n  Senha invalida"
+   sleep 2
+  fi  
 }
-atualiza_senha
-#remover
-#cadastrar
+
+# atualiza_senha
+# remover
+# cadastrar

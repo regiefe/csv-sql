@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-[ -n "$BANCO" ] || {
+[ -z "$BANCO" ] || {
   echo 'Tem que carragar a variavel $BANCO com o caminho do arquivo .db'   
   exit 1
 }

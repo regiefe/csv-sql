@@ -7,13 +7,13 @@ logar(){
   sucesso=$(sqlite3 "$BANCO" "$sql")
 
  if [ -n "$sucesso" ] ; then
-   _window 0 'Logado com  sucesso'  "\n Bem vindo '$1'" 'Esta logado'
+   _window 0 'Logado com  sucesso'  "\n Logado com  '$login'" 'Esta logado'
    sleep $transicao
    return 0
  else
   _window 0  'Acesso negado' "\n Login ou senha invalido" 
   sleep $transicao
-  exit 1
+  return 1
 fi
 }
 
