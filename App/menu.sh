@@ -59,18 +59,18 @@ menu(){
       0 0 10                              \
       '' ''                               \
       Arquivo   'Arquivo CSV'             \
-      Troca_senha   'Trocar a senha'      \
-      Cadastrar   'Cadastro de usuario'   \
       Exporta   'Exporta para planilha'   \
+      Cadastrar   'Cadastro de usuario'   \
+      Troca_senha   'Trocar a senha'      \
       Sair    'Sair do sistema'              
     )"
 
     case "$escolha" in 
-      Arquivo ) arquivo ;;
-      Troca_senha )  troca_senha ;;
-      Cadastrar)  cadastrar;;
-      Exporta )  exporta;;
-      Sair ) sair && break ;;
+      Arquivo     ) arquivo     ;;
+      Exporta     ) exporta     ;;
+      Cadastrar   ) cadastrar   ;;
+      Troca_senha ) troca_senha ;;
+      Sair ) sair && break      ;;
     esac
   done
 }

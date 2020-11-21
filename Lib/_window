@@ -9,12 +9,14 @@ _window [ 1º:number ] [ 2º:string ] [ 3º:string ] [ 4º:string ]
 Primeiro paramentro:
     box 0=default[ infobox ] 1=msgbox 2=inputbox 3=passwordbox 4=yesno 5=textbox
 
-                                                            _fundo ____________ 
-                                                           |  _janela________  |
-                                                           | |               | |
-  _window [ tipo ] [ 'janela' ] [ 'mesagem'  ] [ 'fundo' ] | |   mensagem    | |
-                                                           | |_______________| |
-                                                           |___________________| 
+_window [ tipo ] [ 'janela' ] [ 'mesagem'  ] [ 'fundo' ]
+
+    _fundo ____________ 
+   |  _janela________  |
+   | |               | |
+   | |   mensagem    | |
+   | |_______________| |
+   |___________________| 
                                         
 Setar a variavel tamanho:     
 tamanho default [ '0 0' ]  [ 'altura largura' ] da janela 

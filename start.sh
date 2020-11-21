@@ -4,7 +4,6 @@ source Lib/_window
 source App/loga.sh 
 source App/menu.sh
 
-
 BANCO='database/teste.db'
 TABELA='login'
 transicao=1
