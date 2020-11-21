@@ -1,0 +1,11 @@
+_check_login(){
+     [ -n "$1" ] || {
+        msg="Login  invalido"
+        return 1
+    }
+    login=$*
+    [ ! "$(sqlite3  $BANCO "SELECT * FROM $TABELA WHERE login='$login'")" ] || {
+        msg="'$login' já foi cadastrado"
+      return 1
+    }
+}

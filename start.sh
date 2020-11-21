@@ -3,9 +3,9 @@
 source Lib/_window
 source App/loga.sh 
 source App/menu.sh
-source App/atualiza_senha.sh
 
-BANCO='database/usuario.db'
+
+BANCO='database/teste.db'
 TABELA='login'
 transicao=1
 tamanho='0 0'
@@ -22,8 +22,3 @@ menu
 else
   echo 'Cai fora '&& exit 1
 fi
-
-
-
-
-

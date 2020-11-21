@@ -1,4 +1,8 @@
-#!/usr/bin/env bash
+source Lib/_encrypt
+source App/atualiza_senha.sh
+source App/add_usuario.sh
+source Lib/_check_login
+source Lib/_check_senha
 
 arquivo(){
   _window 0 'pega arquivo' 'Escolha um arquivo ' 'Pega arquivo'
@@ -11,9 +15,22 @@ troca_senha(){
 }
 
 cadastrar(){
-  _window 0 'Exporta' 'Cadastro de usuario' 
-  sleep $transicao
+  tamanho='0 0'
+  login=$(_window 2 'Login' 'Digite o nome do novo usuario' 'Cadastro de usuario')
+  senha=$(_window 3 'Senha' 'Digite a senha do novo usuario' 'Cadastro de usuario')
+  confirma=$(_window 3 'Senha' 'Confirame a senha novo usuario' 'Cadastro de usuario')
+
+  _check_login  $login
+
+  _check_senha "$senha" "$confirma"
+
+  add_usuario "$login" "$senha"
+    [ $? -ne 0 ] || {
+        cadastrar
+    }
+    return 0
 }
+
 exporta(){
   _window 0 'Exporta' 'Escolha a tabela que vai ser exportada' 
   sleep $transicao

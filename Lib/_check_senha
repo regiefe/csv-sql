@@ -1,0 +1,10 @@
+
+_check_senha(){
+    
+  [[ -n "$senha" && "$senha" == "$confirma" ]] || {
+      msg="Senha invalida"
+      return 1
+  }
+
+  _encrypt "$senha"
+}

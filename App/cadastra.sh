@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 source Lib/_crud
 source Lib/_encrypt
 
@@ -10,35 +9,6 @@ _check_login(){
     }
 }
 
-cadastrar(){
-    local login="$1"
-    local senha="$2"
-
-    [ -n "$login" ] || {
-        msg="Login  invalido"
-        return 1
-    }
-
-    _check_login  $login
-
-    [ -n "$senha" ] || {
-        msg="Senha invalido"
-        return 1
-    }
-    
-
-    [ -n "$senha" -a "$senha" == "$REPLY"  ] || {
-        msg="Senha invalida"
-        return 1
-    }
-
-    _encrypt "$senha"
-
-    sql="INSERT INTO $TABELA (login, senha) VALUES ( '$login', '$senha_encrypt')"
-    sqlite3 "$BANCO" "$sql"
-    msg="Cadastrado com  sucesso."
-    sqlite3 -column -header $BANCO "SELECT * FROM $TABELA WHERE login='$login'"
-}
 
 remover(){
     remove="$@"
