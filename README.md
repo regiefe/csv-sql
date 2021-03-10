@@ -18,7 +18,7 @@ cd csv-sql
 ./start.sh
 
 ```
-![csv to sql](img/inicio.png "demo tabela criada e relacionada")
+![csv to sql](telas.gif "Demostração do sistema")
 
 
 ###  Tarefas a ser implementado
