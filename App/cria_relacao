@@ -8,11 +8,10 @@ relaciona(){
     local tabela=${tabelas[1]:2}
     local relacao=${tabelas[0]:2}
 
-
     local relacionamento=${tabela}
     relacionamento+=_${relacao}
 
-    sqlite3 $BANCO "CREATE TABLE ${relacionamento} ( 
+    sqlite4 $BANCO "CREATE TABLE ${relacionamento} ( 
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     ${tabela}_id INTEGER, 
                     ${relacao}_id INTEGER, 
