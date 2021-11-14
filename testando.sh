@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 
+## Parceamento de arquivo csv para tabela 
 
 source App/parser_csv_table.sh
 BANCO='database/teste.db'
-echo "$BANCO"
-tamanho='0 0'
 
-parser_csv_table csv/pessoa.csv
-parser_csv_table csv/cargos.csv
+#tamanho='0 0'
+for arquivo in $(ls csv); do
+  parser_csv_table "csv/$arquivo"
+done
+#parser_csv_table csv/pessoa.csv
+#parser_csv_table csv/cargos.csv
 
-
-
-
+## Troca de senha se usuario 
 
 #TABELA='login'
 #login='maria'
