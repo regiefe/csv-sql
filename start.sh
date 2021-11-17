@@ -10,14 +10,17 @@ transicao=1
 tamanho='0 0'
 
 nome=$(_window 2 'Login' 'Digite seu nome' 'Autenticação do usuario')
+
 senha=$(_window 3 'Senha' 'Digite sua senha' 'Autenticação do usuario')
 
 tamanho='5 40'
 
-logar "$nome" "$senha" 
+logar $nome $senha
 
-if [ "$?" -eq 0 ]; then 
-menu
+if [[ "$?" -eq "0" ]]; then 
+  menu
 else
-  echo 'Cai fora '&& exit 1
+  transicao=3
+  _window 0 'Falha no login' "\n Login ou senha invalido" 'Deu errado'
+  clear
 fi

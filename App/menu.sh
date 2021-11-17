@@ -14,9 +14,18 @@ troca_senha(){
   atualiza_senha
 }
 
+is_login(){
+    sql="SELECT * FROM $TABELA WHERE login='$1'"
+    sqlite3 "$BANCO" "$sql"
+    return 1
+}
+
 cadastrar(){
   tamanho='0 0'
   login=$(_window 2 'Login' 'Digite o nome do novo usuario' 'Cadastro de usuario')
+  is_login $login
+  echo $?
+  exit
   senha=$(_window 3 'Senha' 'Digite a senha do novo usuario' 'Cadastro de usuario')
   confirma=$(_window 3 'Senha' 'Confirame a senha novo usuario' 'Cadastro de usuario')
 
@@ -37,11 +46,12 @@ exporta(){
 }
 
 sair(){
-  _window 4 '' 'Ja vai embora?'  
+  _window 4 'SAIDA' 'Ja vai embora?' 'tchau tchau' 
 
-  if [ "$?" -eq 0 ] ; then
+  if [ "$?" ] ; then
     _window 0 'saida' "\n   Até logo"
     sleep $transicao
+    clear
     return 0
   else
     menu

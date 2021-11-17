@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-help(){
-echo "
+ajuda(){
+printf "
 Uso: _window
 
 _window [ 1º:number ] [ 2º:string ] [ 3º:string ] [ 4º:string ]
@@ -24,7 +24,7 @@ tamanho default [ '0 0' ]  [ 'altura largura' ] da janela
 }
 
 [[  "$1" == '-h' ||  "$1" == '--help' ]] && {
-  help
+  ajuda
   return 0
 }
 
