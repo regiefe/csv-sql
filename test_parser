@@ -1,0 +1,8 @@
+BANCO=database/novo.db
+tabela=$(sqlite3 $BANCO <<< .table)
+echo "Removendo a  tabela $tabela"
+sqlite3 $BANCO <<< "DROP TABLE $tabela"
+source App/parser.sh 
+csv=$PWD/csv/$1
+parser $csv
+echo "Arquivo $csv gravado do banco $BANCO"

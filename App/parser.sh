@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-[ -z "$BANCO" ] || {
-  echo 'Tem que carragar a variavel $BANCO com o caminho do arquivo .db'   
-  exit 1
-}
 
 parser(){
   local campos=$(sed -n 1p "$1"|sed 's/;/,/g')  

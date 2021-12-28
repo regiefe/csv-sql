@@ -7,9 +7,11 @@ source Lib/_check_senha
 
 arquivo(){
   csv="$(dialog --title 'selecione um arquivo' --stdout --fselect $PWD 0 0)"
-  echo "$csv"
-  read
-  parser "$csv"
+  if [[ -f $csv   ]];then
+    parser "$csv"
+  else
+    return 1
+  fi
 }
 
 troca_senha(){
