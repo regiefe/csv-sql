@@ -4,7 +4,7 @@
   exit 1
 }
 
-parser_csv_table(){
+parser(){
   local campos=$(sed -n 1p "$1"|sed 's/;/,/g')  
   local arquivo=$(echo ${1##*/})
   local tabela=${arquivo%.csv}

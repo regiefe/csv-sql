@@ -1,12 +1,15 @@
 source Lib/_encrypt
 source App/atualiza_senha.sh
 source App/add_usuario.sh
+source App/parser.sh
 source Lib/_check_login
 source Lib/_check_senha
 
 arquivo(){
-  _window 0 'pega arquivo' 'Escolha um arquivo ' 'Pega arquivo'
-  sleep $transicao
+  csv="$(dialog --title 'selecione um arquivo' --stdout --fselect $PWD 0 0)"
+  echo "$csv"
+  read
+  parser "$csv"
 }
 
 troca_senha(){
@@ -24,10 +27,11 @@ cadastrar(){
   tamanho='0 0'
   login=$(_window 2 'Login' 'Digite o nome do novo usuario' 'Cadastro de usuario')
   is_login $login
-  echo $?
-  exit
-  senha=$(_window 3 'Senha' 'Digite a senha do novo usuario' 'Cadastro de usuario')
-  confirma=$(_window 3 'Senha' 'Confirame a senha novo usuario' 'Cadastro de usuario')
+
+  if [ "$?" ]; then
+    senha=$(_window 3 'Senha' 'Digite a senha do novo usuario' 'Cadastro de usuario')
+    confirma=$(_window 3 'Senha' 'Confirame a senha novo usuario' 'Cadastro de usuario')
+  fi
 
   _check_login  $login
 
