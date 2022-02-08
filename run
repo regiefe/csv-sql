@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+docker rm -f $(docker ps -q) 2> /dev/null
+docker image rm m-csv-sql 2> /dev/null
+docker build --tag m-csv-sql . 2> /dev/null
+docker run -it --name csv-sql m-csv-sql ./start.sh
