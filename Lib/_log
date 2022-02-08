@@ -1,0 +1,9 @@
+#! /usr/bin/env bash
+
+_log(){
+   msg="$(date +'%F %T') | $1 | $0"
+
+   [[ -d log ]] || mkdir log
+   
+   echo $msg >> $PWD/log/$0.log
+} 
