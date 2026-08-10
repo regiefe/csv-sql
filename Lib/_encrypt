@@ -1,9 +1,21 @@
 #!/usr/bin/env bash
 
 _encrypt(){
-  [ -n $@  ] || {
+  [ -n "$@" ] || {
     msg='Não tem nada para encryptar'
     return 1
   }
-    senha_encrypt=$(echo "$@" | shasum | cut -d' ' -f1) 
+  senha_encrypt=$(htpasswd -nbBC 10 "" "$@" | cut -d: -f2)
+}
+
+_verificar_senha(){
+  local senha="$1"
+  local hash="$2"
+  [ -n "$senha" ] && [ -n "$hash" ] || return 1
+  local tmpfile=$(mktemp)
+  echo "tmpuser:$hash" > "$tmpfile"
+  local resultado=0
+  htpasswd -vb "$tmpfile" "tmpuser" "$senha" 2>/dev/null || resultado=$?
+  rm -f "$tmpfile"
+  return $resultado
 }

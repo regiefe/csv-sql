@@ -5,9 +5,9 @@ CREATE TABLE login (
     senha VARCHAR(100) NOT NULL
 );
 INSERT INTO login (login, senha) VALUES 
-  ('teste','a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0'),
-  ('regi','a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0'),
-  ('heitor','a8fdc205a9f19cc1c7507a60c4f01b13d11d7fd0');
+  ('teste','$2y$10$.CWHSqkOxSaxidCv00y/Lexa76.bGywET3zVEvCYN53lZj5kpcIju'),
+  ('regi','$2y$10$.CWHSqkOxSaxidCv00y/Lexa76.bGywET3zVEvCYN53lZj5kpcIju'),
+  ('heitor','$2y$10$.CWHSqkOxSaxidCv00y/Lexa76.bGywET3zVEvCYN53lZj5kpcIju');
 .mode column
 .header on
 SELECT * FROM login;
