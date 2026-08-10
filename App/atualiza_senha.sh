@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source Lib/_sanitize
 
 atualiza_senha(){
   senha_antiga=$(_window 3 'Atualizando senha' 'Confirme a senha antiga:')
@@ -9,7 +10,8 @@ atualiza_senha(){
     senha_reply=$(_window 3 'Atualizando senha' 'Confirme a nova senha: ')
     [ -n "$senha_nova" -a "$senha_nova" == "$senha_reply"  ] || return 1 
     _encrypt "$senha_nova"
-    sql="UPDATE $TABELA SET senha='$senha_encrypt'  WHERE login='$login'" 
+    local login_safe="$(_sanitize_sql "$login")"
+    sql="UPDATE $TABELA SET senha='$senha_encrypt'  WHERE login='$login_safe'" 
 
     sqlite3 "$BANCO" "$sql"
     tamanho='5 40'

@@ -3,7 +3,7 @@ _check_login(){
         msg="Login  invalido"
         return 1
     }
-    login=$*
+    local login="$(_sanitize_sql "$*")"
     [ ! "$(sqlite3  $BANCO "SELECT * FROM $TABELA WHERE login='$login'")" ] || {
         msg="'$login' já foi cadastrado"
       return 1

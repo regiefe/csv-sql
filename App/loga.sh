@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
+source Lib/_sanitize
+
 logar(){
-  login="${1}"
-  senha=$(echo "${2}" | shasum | cut -d' ' -f1)
-  sql="SELECT login, senha FROM '$TABELA' WHERE login='$login' AND senha='$senha'"
-  sucesso=$(sqlite3 "$BANCO" "$sql")
+  local login="$(_sanitize_sql "${1}")"
+  local senha=$(echo "${2}" | shasum | cut -d' ' -f1)
+  local sql="SELECT login, senha FROM '$TABELA' WHERE login='$login' AND senha='$senha'"
+  local sucesso=$(sqlite3 "$BANCO" "$sql")
 
  if [ -n "$sucesso" ] ; then
    _window 0 'Logado com  sucesso'  "\n Logado com  '$login'" 'Esta logado'

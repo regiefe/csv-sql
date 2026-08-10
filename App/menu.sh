@@ -1,4 +1,5 @@
 source Lib/_encrypt
+source Lib/_sanitize
 source App/atualiza_senha.sh
 source App/add_usuario.sh
 source App/parser.sh
@@ -20,7 +21,8 @@ troca_senha(){
 }
 
 is_login(){
-    sql="SELECT * FROM $TABELA WHERE login='$1'"
+    local login="$(_sanitize_sql "$1")"
+    sql="SELECT * FROM $TABELA WHERE login='$login'"
     sqlite3 "$BANCO" "$sql"
     return 1
 }

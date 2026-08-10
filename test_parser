@@ -1,5 +1,8 @@
+#!/usr/bin/env bash
+source Lib/_sanitize
+
 BANCO=database/novo.db
-tabela=$(sqlite3 $BANCO <<< .table)
+tabela="$(_sanitize_identifier "$(sqlite3 $BANCO <<< .table)")"
 echo "Removendo a  tabela $tabela"
 sqlite3 $BANCO <<< "DROP TABLE $tabela"
 source App/parser.sh 

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+_sanitize_sql() {
+    local input="$1"
+    # Remove caracteres perigosos e escapa aspas
+    local sanitized="${input//\'/\'\'}"
+    sanitized="${sanitized//\\/\\\\}"
+    sanitized="${sanitized//\"/\"\"}"
+    echo "$sanitized"
+}
+
+_sanitize_identifier() {
+    local input="$1"
+    # Remove caracteres nao alphanumericos, exceto underscore
+    local sanitized=$(echo "$input" | sed 's/[^a-zA-Z0-9_]//g')
+    echo "$sanitized"
+}

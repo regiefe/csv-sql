@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+source Lib/_sanitize
 
 [ "$BANCO"  ] || {
     echo "Set o caminho do banco na variavel 'BANCO' "
@@ -27,14 +28,15 @@ _find(){
     _campos
     local sql="SELECT * FROM $TABELA " 
     [ ! "$1" ] || {
-        sql+="WHERE ${campos[1]}='$1'"
+        local valor="$(_sanitize_sql "$1")"
+        sql+="WHERE ${campos[1]}='$valor'"
     }
     
     sqlite3 "$BANCO" "$sql"
 }
 
 _tem(){
-    tem=$(_find $1 | cut -d '|' -f2)
+    tem=$(_find "$1" | cut -d '|' -f2)
     [ -n "$tem" ] || {
       echo 'Epa! não tem ninguem com esse nome'
         return 1
@@ -43,8 +45,9 @@ _tem(){
 
 _delete(){
     _campos
-    _tem $1
-    local sql="DELETE FROM $TABELA WHERE ${campos[0]}='$tem';" 
+    _tem "$1"
+    local valor="$(_sanitize_sql "$tem")"
+    local sql="DELETE FROM $TABELA WHERE ${campos[0]}='$valor';" 
     sqlite3 "$BANCO" "$sql"
     msg="$TABELA '$tem' limado !!"
 }
@@ -55,7 +58,11 @@ _insert(){
         echo "Esta faltando informação! "
         return 1
     }
-    local valor=$(echo "$@" | sed "s/ /', '/g;s/.*/'&'/") 
+    local valores=()
+    for arg in "$@"; do
+        valores+=("$(_sanitize_sql "$arg")")
+    done
+    local valor=$(echo "${valores[@]}" | sed "s/ /', '/g;s/.*/'&'/") 
     valor=$(echo "$valor" | sed 's/+/ /g')  
     local field=$(echo "${campos[@]}" | sed 's/ /, /g')
     local sql="INSERT INTO $TABELA ( $field ) VALUES ( $valor ); "
@@ -72,12 +79,15 @@ _update(){
         return 1
     }
     local valor=($@)  
+    local set=""
     for ((i=1; i<="$qto"; i++ )){
-        local set+=" ${campos[$i]}='${valor[$i]}'"  
+        local valor_safe="$(_sanitize_sql "${valor[$i]}")"
+        set+=" ${campos[$i]}='$valor_safe'"  
     }
     set=$(echo "$set" |  sed "s/=''$//g;s/ //;s/ /, /g")
     set=$(echo $set | sed 's/+/ /g;s/,$//')
-    local sql="update $TABELA set $set where ${campos[0]}='$1' "
+    local id_safe="$(_sanitize_sql "$1")"
+    local sql="update $TABELA set $set where ${campos[0]}='$id_safe' "
     echo "$sql"
     sqlite3 "$BANCO" "$sql"
     echo "'$1' atualizado com sucesso !!"
