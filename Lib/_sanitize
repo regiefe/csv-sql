@@ -2,9 +2,9 @@
 
 _sanitize_sql() {
     local input="$1"
-    # Remove caracteres perigosos e escapa aspas
-    local sanitized="${input//\'/\'\'}"
-    sanitized="${sanitized//\\/\\\\}"
+    # Escapa barras PRIMEIRO, depois aspas (ordem correta para evitar SQL injection)
+    local sanitized="${input//\\/\\\\}"
+    sanitized="${sanitized//\'/\'\'}"
     sanitized="${sanitized//\"/\"\"}"
     echo "$sanitized"
 }

@@ -23,29 +23,39 @@ troca_senha(){
 is_login(){
     local login="$(_sanitize_sql "$1")"
     sql="SELECT * FROM $TABELA WHERE login='$login'"
-    sqlite3 "$BANCO" "$sql"
-    return 1
+    local resultado=$(sqlite3 "$BANCO" "$sql")
+    [ -n "$resultado" ] && return 0 || return 1
 }
 
 cadastrar(){
   tamanho='0 0'
   login=$(_window 2 'Login' 'Digite o nome do novo usuario' 'Cadastro de usuario')
-  is_login $login
 
-  if [ "$?" ]; then
-    senha=$(_window 3 'Senha' 'Digite a senha do novo usuario' 'Cadastro de usuario')
-    confirma=$(_window 3 'Senha' 'Confirame a senha novo usuario' 'Cadastro de usuario')
+  if is_login "$login"; then
+    _window 0 'Erro' "'$login' ja existe. Escolha outro login."
+    return 1
   fi
 
-  _check_login  $login
+  _check_login "$login" || {
+    _window 0 'Erro' "$msg"
+    return 1
+  }
 
-  _check_senha "$senha" "$confirma"
+  senha=$(_window 3 'Senha' 'Digite a senha do novo usuario' 'Cadastro de usuario')
+  confirma=$(_window 3 'Senha' 'Confirme a senha novo usuario' 'Cadastro de usuario')
 
-  add_usuario "$login" "$senha"
-    [ $? -ne 0 ] || {
-        cadastrar
-    }
-    return 0
+  _check_senha "$senha" "$confirma" || {
+    _window 0 'Erro' "$msg"
+    return 1
+  }
+
+  add_usuario "$login" "$senha" || {
+    _window 0 'Erro' "Falha ao cadastrar usuario"
+    return 1
+  }
+
+  _window 0 'Sucesso' "Usuario '$login' cadastrado com sucesso"
+  return 0
 }
 
 exporta(){
@@ -54,10 +64,10 @@ exporta(){
 }
 
 sair(){
-  _window 4 'SAIDA' 'Ja vai embora?' 'tchau tchau' 
+  _window 4 'SAIDA' 'Ja vai embora?' 'tchau tchau'
 
-  if [ "$?" ] ; then
-    _window 0 'saida' "\n   Até logo"
+  if [ "$?" -eq 0 ]; then
+    _window 0 'saida' "\n   Ate logo"
     sleep $transicao
     clear
     return 0
